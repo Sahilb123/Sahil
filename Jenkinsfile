@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-credentials', url: "${GITHUB_REPO}" // Pull from GitHub
+                git credentialsId: 'aef1d9d5-a974-4142-bae1-8a8030105286', url: "${GITHUB_REPO}" // Pull from GitHub
             }
         }
         stage('Build WAR') {
