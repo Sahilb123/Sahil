@@ -1,14 +1,18 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
+<head>
+    <title>Login</title>
+</head>
 <body>
-    <h1>Login Page</h1>
-    <form action="welcome.jsp" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username">
-        <br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password">
-        <br><br>
-        <input type="submit" value="Submit">
-    </form>
+<h2>Login</h2>
+<% if (request.getParameter("error") != null) { %>
+    <p style="color:red;"><%= request.getParameter("error") %></p>
+<% } %>
+<form action="login" method="post">
+    Username: <input type="text" name="username" required><br>
+    Password: <input type="password" name="password" required><br>
+    <input type="submit" value="Login">
+</form>
 </body>
 </html>
