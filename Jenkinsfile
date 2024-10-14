@@ -2,15 +2,17 @@ pipeline {
     agent any
     environment {
         GITHUB_REPO = 'https://github.com/Sahilb123/Sahil.git'
-        TOMCAT_URL = 'http://192.168.5.175:8080/manager'
-        TOMCAT_CREDENTIALS_ID = 'c7cb4226-1fbd-4320-a11c-01b63e426fec	' // Jenkins credentials for Tomcat
+        TOMCAT_URL = 'http://192.168.5.175:8080/manager' // Tomcat Manager URL
+        TOMCAT_CREDENTIALS_ID = 'c7cb4226-1fbd-4320-a11c-01b63e426fec' // Jenkins credentials for Tomcat
         SELENIUM_HOST = 'http://192.168.5.82:4444/wd/hub'
         CONTEXT_PATH = '/selenium-app' // Change to your application's context path
+        GITHUB_CREDENTIALS_ID = 'aef1d9d5-a974-4142-bae1-8a8030105286' // Correctly enclosed in quotes
     }
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'aef1d9d5-a974-4142-bae1-8a8030105286', url: "${GITHUB_REPO}" // Pull from GitHub
+                // Use the environment variable directly without quotes
+                git credentialsId: "${GITHUB_CREDENTIALS_ID}", url: "${GITHUB_REPO}" // Pull from GitHub
             }
         }
         stage('Build WAR') {
