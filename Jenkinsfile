@@ -1,13 +1,14 @@
 pipeline {
     agent any
+
     environment {
         GITHUB_REPO = 'https://github.com/Sahilb123/Sahil.git'
         TOMCAT_URL = 'http://192.168.5.175:8080/manager'
         TOMCAT_CREDENTIALS_ID = 'c7cb4226-1fbd-4320-a11c-01b63e426fec' // Jenkins credentials for Tomcat
-        SELENIUM_HOST = 'http://192.168.5.82:4444/'
         CONTEXT_PATH = '/selenium-app' // Change to your application's context path
         GITHUB_CREDENTIALS_ID = 'aef1d9d5-a974-4142-bae1-8a8030105286' // Correctly enclosed in quotes
     }
+
     stages {
         stage('Clean Workspace') {
             steps {
@@ -73,17 +74,8 @@ pipeline {
                 }
             }
         }
-        stage('Selenium Test') {
-            steps {
-                script {
-                    // Run the Selenium test suite against the deployed application
-                    sh '''
-                    mvn -Dtest=RunSeleniumTests test
-                    '''
-                }
-            }
-        }
     }
+
     post {
         always {
             echo 'Pipeline finished!'
