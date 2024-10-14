@@ -68,7 +68,7 @@ pipeline {
                     def username = tomcatCredentials.username
                     def password = tomcatCredentials.password
 
-                    // Deploy the WAR file to Tomcat
+                    // Deploy the WAR file to Tomcat using credentials from Jenkins
                     def deployCommand = "curl --user ${username}:${password} --upload-file ${warFileName} ${TOMCAT_URL}/deploy?path=${CONTEXT_PATH}&update=true"
                     sh deployCommand
                 }
