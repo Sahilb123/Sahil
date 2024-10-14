@@ -46,6 +46,15 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <!-- Maven War Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <skipTests>true</skipTests> <!-- Skip tests when packaging -->
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
