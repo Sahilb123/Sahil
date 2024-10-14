@@ -16,19 +16,34 @@ pipeline {
         }
         stage('Checkout') {
             steps {
-                git branch: 'main', credentialsId: "${GITHUB_CREDENTIALS_ID}", url: "${GITHUB_REPO}" // Checkout main branch
+                script {
+                    // Checkout main branch
+                    git branch: 'main', credentialsId: "${GITHUB_CREDENTIALS_ID}", url: "${GITHUB_REPO}"
+
+                    // Search for pom.xml in the workspace
+                    def pomFile = sh(script: 'find . -name pom.xml', returnStdout: true).trim()
+                    env.POM_DIR = pomFile ? pomFile.substring(0, pomFile.lastIndexOf('/')) : null // Extract directory path
+                    if (!env.POM_DIR) {
+                        error("No pom.xml found in the repository.")
+                    }
+                }
             }
         }
         stage('Build WAR') {
             steps {
-                sh 'mvn clean package' // This generates the WAR file
+                script {
+                    // Navigate to the directory containing the pom.xml and run Maven
+                    dir(env.POM_DIR) {
+                        sh 'mvn clean package -X' // Run Maven with debug logging
+                    }
+                }
             }
         }
         stage('Deploy to Tomcat') {
             steps {
                 script {
                     // Get the artifact name from the pom.xml
-                    def pom = readMavenPom file: 'pom.xml'
+                    def pom = readMavenPom file: "${env.POM_DIR}/pom.xml"
                     def warFileName = "target/${pom.artifactId}-${pom.version}.war"
 
                     // Deploy the WAR file to Tomcat
