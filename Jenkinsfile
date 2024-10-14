@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        GITHUB_REPO = 'https://github.com/<your-username>/selenium-app.git'
-        TOMCAT_URL = 'http://192.168.5.175:8080/manager/text'
+        GITHUB_REPO = 'https://github.com/Sahilb123/Sahil.git'
+        TOMCAT_URL = 'http://192.168.5.175:8080/manager'
         TOMCAT_CREDENTIALS_ID = 'c7cb4226-1fbd-4320-a11c-01b63e426fec	' // Jenkins credentials for Tomcat
         SELENIUM_HOST = 'http://192.168.5.82:4444/wd/hub'
         CONTEXT_PATH = '/selenium-app' // Change to your application's context path
