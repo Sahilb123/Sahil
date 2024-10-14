@@ -66,7 +66,7 @@ pipeline {
                     // Get Tomcat credentials from Jenkins credentials store
                     withCredentials([usernamePassword(credentialsId: TOMCAT_CREDENTIALS_ID, usernameVariable: 'TOMCAT_USERNAME', passwordVariable: 'TOMCAT_PASSWORD')]) {
                         // Deploy the WAR file to Tomcat using credentials from Jenkins
-                        def deployCommand = "curl --user ${TOMCAT_USERNAME}:${TOMCAT_PASSWORD} --upload-file ${warFileName} ${TOMCAT_URL}/deploy?path=${CONTEXT_PATH}&update=true"
+                        def deployCommand = "curl --user ${TOMCAT_USERNAME}:${TOMCAT_PASSWORD} --upload-file ${warFileName} ${TOMCAT_URL}/manager/deploy?path=${CONTEXT_PATH}&update=true"
                         sh deployCommand
                     }
                 }
