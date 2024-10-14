@@ -41,14 +41,18 @@ pipeline {
         }
         stage('Build WAR') {
             steps {
-                // Set environment variables for Maven
                 script {
+                    // Set environment variables for Maven
                     env.M2_HOME = "${WORKSPACE}/maven" // Set the Maven home to the installation directory
                     env.PATH = "${M2_HOME}/bin:" + env.PATH // Update the PATH to include Maven
-                }
 
-                // Run Maven clean package
-                sh 'mvn clean package -X' // This generates the WAR file in debug mode
+                    // Read pom.xml to get artifactId and version
+                    def pom = readMavenPom file: 'pom.xml'
+                    def warFileName = "target/${pom.artifactId}-${pom.version}.war"
+
+                    // Run Maven clean package
+                    sh 'mvn clean package -X' // This generates the WAR file in debug mode
+                }
             }
         }
         stage('Deploy to Tomcat') {
