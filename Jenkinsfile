@@ -64,13 +64,11 @@ pipeline {
                     def warFileName = "target/${pom.artifactId}-${pom.version}.war"
 
                     // Get Tomcat credentials from Jenkins credentials store
-                    def tomcatCredentials = usernamePassword(credentialsId: TOMCAT_CREDENTIALS_ID)
-                    def username = tomcatCredentials.username
-                    def password = tomcatCredentials.password
-
-                    // Deploy the WAR file to Tomcat using credentials from Jenkins
-                    def deployCommand = "curl --user ${username}:${password} --upload-file ${warFileName} ${TOMCAT_URL}/deploy?path=${CONTEXT_PATH}&update=true"
-                    sh deployCommand
+                    withCredentials([usernamePassword(credentialsId: TOMCAT_CREDENTIALS_ID, usernameVariable: 'TOMCAT_USERNAME', passwordVariable: 'TOMCAT_PASSWORD')]) {
+                        // Deploy the WAR file to Tomcat using credentials from Jenkins
+                        def deployCommand = "curl --user ${TOMCAT_USERNAME}:${TOMCAT_PASSWORD} --upload-file ${warFileName} ${TOMCAT_URL}/deploy?path=${CONTEXT_PATH}&update=true"
+                        sh deployCommand
+                    }
                 }
             }
         }
