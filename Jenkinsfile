@@ -56,26 +56,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to Tomcat') {
-            steps {
-                script {
-                    // Get the artifact name from the pom.xml
-                    def pom = readMavenPom file: 'pom.xml'
-                    def warFileName = "target/${pom.artifactId}-${pom.version}.war"
-
-                    // Get Tomcat credentials from Jenkins credentials store
-                    withCredentials([usernamePassword(credentialsId: TOMCAT_CREDENTIALS_ID, usernameVariable: 'TOMCAT_USERNAME', passwordVariable: 'TOMCAT_PASSWORD')]) {
-                        // Deploy the WAR file to Tomcat using credentials from Jenkins
-                        sh """
-                            curl --user "${TOMCAT_USERNAME}:${TOMCAT_PASSWORD}" \
-                            --upload-file ${warFileName} \
-                            ${TOMCAT_URL}/deploy?path=${CONTEXT_PATH}&update=true
-                        """
-                    }
-                }
-            }
-        }
-    }
+    } // Closing the 'stages' block
 
     post {
         always {
@@ -88,4 +69,4 @@ pipeline {
             echo 'Pipeline failed.'
         }
     }
-}
+} // Closing the 'pipeline' block
